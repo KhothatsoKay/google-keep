@@ -117,17 +117,17 @@ color: black;
 .form-container{
     background: #fff;
     max-width: 598px;
-    height: 46px;
     margin: 32px auto;
     box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 2px 6px 2px rgba(60,64,67,0.149);
-    border: 1px solid e0e1e0;
+    border: 1px solid #e0e1e0;
     border-radius: 8px;
 
 }
-.form-container form{
+.form-container form {
     display: flex;
     justify-content: space-between;
     height: 100%;
+    align-items: center;
     color: #5f6368;
 }
 .note-text{
@@ -135,8 +135,81 @@ color: black;
     font-size: 1rem;
     height: 100%;
     padding: 10px;
-    margin-left: 10px;
+    margin-left:  10px;
+    width: 100%;
+    margin-right: 10px;
+    padding-left: 10px;
+}
+.note-title{
+    border: none;
+    font-size: 1rem;
+    height: 100%;
+    padding: 10px;
+    margin-left:  10px;
+    width: 100%;
+    margin-right: 10px;
+    padding-left: 10px;
 }
 .form-actions{
     display: flex;
+    margin: 10px;
+}
+.active-form{
+
+}
+.active-form form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+}
+.active-form form .form-actions .icons {
+    display: flex;
+    
+}
+.active-form form .form-actions{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.close-btn{
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.small-icon{
+    color: black;
+    font-size: 1.3rem;
+    margin-left: 10px;
+}
+.notes{
+    display: flex;
+    justify-content: center;
+}
+.note{
+    background: #fff;
+    width: 240px;
+    margin: 10px;
+    border: 2px solid #e0e1e0;
+    border-radius: 8px;
+    
+}
+.note .title{
+    width: 100%;
+    margin: 10px 0 0 15px;
+}
+.note .text{
+    width: 100%;
+    margin-top: 10px;
+    margin: 10px 0 0 15px;
+}
+.note .note-footer{
+    display: flex;
+    padding: 0;
+}
+.note-footer .material-icons-outlined{
+    color: #5f6368;
 }
