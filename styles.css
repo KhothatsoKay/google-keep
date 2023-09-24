@@ -51,6 +51,7 @@ nav{
 .logo-area{
     display: flex;
     align-items: center;
+   
 }
 .logo-text{
     font-size: 1rem;
@@ -195,6 +196,7 @@ color: black;
     margin: 10px;
     border: 2px solid #e0e1e0;
     border-radius: 8px;
+    position: relative;
     
 }
 .note .title{
@@ -212,4 +214,30 @@ color: black;
 }
 .note-footer .material-icons-outlined{
     color: #5f6368;
+}
+@media (max-width: 768px) {
+    .logo-text {
+        font-size: 0.8rem; 
+    }
+
+    .search-area {
+        width: auto; 
+    }
+
+    .search-area input[type="text"] {
+        display: none; 
+    }
+
+    .search-area span.material-symbols-outlined {
+        display: inline-block;
+    }
+    .form-container{
+        margin-left: 70px;
+    }
+}
+
+.note .check_circle{
+    position: absolute;
+    left: -10px;
+    top: -10px;
 }
