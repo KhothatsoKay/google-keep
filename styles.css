@@ -309,3 +309,9 @@ input:focus {
 .open-modal {
   visibility: visible;
 }
+.logout{
+  cursor: pointer;
+}
+.auth-user{
+  cursor: pointer;
+}
