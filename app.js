@@ -8,11 +8,10 @@ class Note {
 
 class App {
   constructor() {
-    // localStorage.setItem('test', JSON.stringify(['123']));
-    // console.log(JSON.parse(localStorage.getItem('test')));
-    this.notes = JSON.parse(localStorage.getItem("notes")) || [];
+    this.notes = [];
     this.selectedNoteId = "";
     this.miniSidebar = true;
+    this.userId = "";
 
     this.$activeForm = document.querySelector(".active-form");
     this.$inactiveForm = document.querySelector(".inactive-form");
@@ -31,7 +30,7 @@ class App {
 
     this.$firebaseAuthContainer = document.querySelector("#firebaseui-auth-container");
     this.$authUserText = document.querySelector(".auth-user");
-  this.$logoutButton = document.querySelector(".logout");
+    this.$logoutButton = document.querySelector(".logout");
     this.ui = new firebaseui.auth.AuthUI(auth);
 
     this.handleAuth();
@@ -45,36 +44,49 @@ class App {
 
     auth.onAuthStateChanged((user) => {
       if (user) {
-       this.redirectToApp();
-       this.$authUserText.innerHTML = user.displayName;
-       console.log(user);
+        console.log(user.uid);
+        this.userId = user.uid;
+        this.$authUserText.innerHTML = user.displayName;
+        this.redirectToApp();
+        console.log(user);
       } else {
-       this.redirectToAuth();
+        this.redirectToAuth();
       }
     });
   }
 
-  handleLogout(){
+  handleLogout() {
     firebase.auth().signOut().then(() => {
       this.redirectToAuth();
     }).catch((error) => {
       console.log("Error occured", error)
     });
   }
-  redirectToApp(){
+  redirectToApp() {
     this.$firebaseAuthContainer.style.display = "none";
-    this.$app.style.display = "block"; 
+    this.$app.style.display = "block";
+    this.fetchNotesFromDB();
   }
 
-  redirectToAuth(){
+  redirectToAuth() {
     this.$firebaseAuthContainer.style.display = "block";
-    this.$app.style.display = "none"; 
+    this.$app.style.display = "none";
 
     this.ui.start('#firebaseui-auth-container', {
+      callbacks: {
+        signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+          this.userId = authResult.user.uid;
+          this.$authUserText.innerHTML = user.displayName;
+          this.redirectToApp();
+        },
+        uiShown: function () {
+          document.getElementById('loader').style.display = 'none';
+        }
+      },
       signInOptions: [
-         firebase.auth.EmailAuthProvider.PROVIDER_ID,
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID
-        
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+
       ],
       // Other config options...
     });
@@ -180,7 +192,7 @@ class App {
 
   addNote({ title, text }) {
     if (text != "") {
-      const newNote = new Note(cuid(), title, text);
+      const newNote = { id: cuid(), title, text };
       this.notes = [...this.notes, newNote];
       this.render();
     }
@@ -227,8 +239,41 @@ class App {
     }
   }
 
+  fetchNotesFromDB() {
+    var docRef = db.collection("users").doc(this.userId);
+
+    docRef.get().then((doc) => {
+      if (doc.exists) {
+        this.notes = doc.data().notes;
+        this.displayNotes();
+        console.log("Document data:", doc.data());
+      } else {
+        db.collection("users").doc(this.userId).set({
+          notes: []
+        })
+          .then(() => {
+            console.log("User successfully created!");
+          })
+          .catch((error) => {
+            console.error("Error writing document: ", error);
+          });
+        console.log("No such document!");
+      }
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+  }
+
   saveNotes() {
-    localStorage.setItem('notes', JSON.stringify(this.notes));
+    db.collection("users").doc(this.userId).set({
+      notes: this.notes
+    })
+      .then(() => {
+        console.log("Document successfully written!");
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
   }
 
   render() {
@@ -236,14 +281,13 @@ class App {
     this.displayNotes();
   }
 
-  //  onmouseover="app.handleMouseOverNote(this)" onmouseout="app.handleMouseOutNote(this)"
 
   displayNotes() {
     this.$notes.innerHTML = this.notes
       .map(
         (note) =>
           `
-        <div class="note" id="${note.id}">
+        <div class="note" id="${note.id}" onmouseover="app.handleMouseOverNote(this)" onmouseout="app.handleMouseOutNote(this)">
           <span class="material-symbols-outlined check-circle"
             >check_circle</span
           >
