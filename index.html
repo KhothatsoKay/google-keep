@@ -15,10 +15,6 @@
     <link rel="shortcut icon" href="https://ssl.gstatic.com/keep/keep_2023q3.ico">
   </head>
   <body>
-    <div id="firebaseui-auth-container">
-    </div>
-
-    <div id="app">
       <nav>
         <div class="logo-area">
           <div class="tooltip">
@@ -67,7 +63,7 @@
           </div>
           <div class="tooltip">
             <span class="material-symbols-outlined hover">account_circle</span>
-            <span class="tooltip-text logout">Logout</span>
+            <span class="tooltip-text logout">Account</span>
             <span class="auth-user">
              
             </span>
@@ -267,27 +263,7 @@
         
       </main>
 
-    </div>
    
-    
-    <script  src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script  src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script  src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    
-    
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyC8NoxTdm9Ey_4mbLg0Pl-n8oBgvgfH_S4",
-    authDomain: "keep-ec4f8.firebaseapp.com",
-    projectId: "keep-ec4f8",
-    storageBucket: "keep-ec4f8.appspot.com",
-    messagingSenderId: "793603272610",
-    appId: "1:793603272610:web:bff2a0fadfcd1c5b174cfb"
-  };
- firebase.initializeApp(firebaseConfig);
- const auth = firebase.auth();
- const db = firebase.firestore();
-</script>
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/cuid/1.3.8/browser-cuid.min.js"
